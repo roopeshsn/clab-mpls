@@ -1,0 +1,49 @@
+name: mpls-bgp-lu
+
+topology:
+  kinds:
+    linux:
+      image: quay.io/frrouting/frr:10.2.1
+      privileged: true
+
+  nodes:
+    r1:
+      kind: linux
+      hostname: r1
+      binds:
+        - ./configs/daemons:/etc/frr/daemons
+        - ./configs/r1/frr.conf:/etc/frr/frr.conf
+      sysctls:
+        net.ipv4.ip_forward: 1
+        net.mpls.platform_labels: 1048575
+      exec:
+        - sysctl -w net.mpls.conf.eth1.input=1
+
+    r2:
+      kind: linux
+      hostname: r2
+      binds:
+        - ./configs/daemons:/etc/frr/daemons
+        - ./configs/r2/frr.conf:/etc/frr/frr.conf
+      sysctls:
+        net.ipv4.ip_forward: 1
+        net.mpls.platform_labels: 1048575
+      exec:
+        - sysctl -w net.mpls.conf.eth1.input=1
+        - sysctl -w net.mpls.conf.eth2.input=1
+
+    r3:
+      kind: linux
+      hostname: r3
+      binds:
+        - ./configs/daemons:/etc/frr/daemons
+        - ./configs/r3/frr.conf:/etc/frr/frr.conf
+      sysctls:
+        net.ipv4.ip_forward: 1
+        net.mpls.platform_labels: 1048575
+      exec:
+        - sysctl -w net.mpls.conf.eth1.input=1
+
+  links:
+    - endpoints: ["r1:eth1", "r2:eth1"]
+    - endpoints: ["r2:eth2", "r3:eth1"]
