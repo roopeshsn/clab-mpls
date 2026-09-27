@@ -67,3 +67,5 @@ bash -c "$(curl -sL https://get.containerlab.dev)"
 ```
 containerlab deploy -t clab.yaml
 ```
+
+Credits: martimy/clab_mpls_frr
