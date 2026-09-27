@@ -62,3 +62,8 @@ sudo apt update
 sudo apt install -y curl iputils-ping iproute2 jq
 bash -c "$(curl -sL https://get.containerlab.dev)"
 ```
+
+### Deploy
+```
+containerlab deploy -t clab.yaml
+```
